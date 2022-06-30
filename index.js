@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require('express')
 const app = express()
-const port = 5500
+const port = 80
 const router = express.Router();
 
 // additional modules
