@@ -94,7 +94,7 @@ app.get(`/review-card`, async function (req, res) {
 
 });
 
-app.get('/gen', async () => {
+app.get('/gen', async (req, res) => {
   try {
     let html_gen = generateHtml("testing", "testing");
     const image = await nodeHtmlToImage({
