@@ -12,7 +12,7 @@ const axios = require('axios');
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
-const rid = '627cd482e29d8400112fd0d4';
+const rid_def = '627cd482e29d8400112fd0d4';
 
 const generateHtml = (dao_name, description) => {
   let htmlTemplate = `<html>
@@ -76,7 +76,7 @@ const generateHtml = (dao_name, description) => {
 
 app.get(`/review-card`, async function (req, res) {
   try {
-    // let rid = req.query.rid;
+    let rid = req.query.rid;
     let api_res = await axios.get(`https://7cjecbsr4a.us-west-2.awsapprunner.com/review/get-review-by-id?rid=${rid}`)
     let review = api_res.data;
     let review_text = (review.review_desc.length >= 400) ? review.review_desc.substring(0, 400) + '....' : review.review_desc
@@ -109,7 +109,7 @@ app.get('/gen', async (req, res) => {
 })
 
 app.get('/get-review', async (req, res) => {
-  // let rid = req.query.rid;
+  let rid = req.query.rid;
   let api_res = await axios.get(`https://7cjecbsr4a.us-west-2.awsapprunner.com/review/get-review-by-id?rid=${rid}`)
   console.log(api_res)
   res.send(api_res.data)
