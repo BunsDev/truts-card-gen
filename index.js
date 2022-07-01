@@ -15,7 +15,7 @@ app.use(express.urlencoded({ limit: "50mb" }));
 const rid = '627cd482e29d8400112fd0d4';
 
 const generateHtml = (dao_name, description) => {
-    let htmlTemplate = `<html>
+  let htmlTemplate = `<html>
     <head>
       <title>Parcel Sandbox</title>
       <meta charset="UTF-8" />
@@ -70,41 +70,41 @@ const generateHtml = (dao_name, description) => {
     </body>
     </html>`
 
-    return htmlTemplate
+  return htmlTemplate
 }
 
 
 app.get(`/review-card`, async function (req, res) {
-    try {
-        let rid = req.query.rid;
-        let api_res = await axios.get(`${process.env.API}/review/get-review-by-id?rid=${rid}`)
-        let review = api_res.data;
-        let review_text = (review.review_desc.length >= 400) ? review.review_desc.substring(0, 400) + '....' : review.review_desc
-        let html_gen = generateHtml(review.dao_name, review_text);
-    
-        const image = await nodeHtmlToImage({
-            html: html_gen
-        });
-        res.writeHead(200, { 'Content-Type': 'image/png' });
-        res.end(image, 'binary');
-    } catch (error) {
-        console.log(error);
-        res.status(404).send()
-    }
-  
+  try {
+    let rid = req.query.rid;
+    let api_res = await axios.get(`https://7cjecbsr4a.us-west-2.awsapprunner.com/review/get-review-by-id?rid=${rid}`)
+    let review = api_res.data;
+    let review_text = (review.review_desc.length >= 400) ? review.review_desc.substring(0, 400) + '....' : review.review_desc
+    let html_gen = generateHtml(review.dao_name, review_text);
+
+    const image = await nodeHtmlToImage({
+      html: html_gen
+    });
+    res.writeHead(200, { 'Content-Type': 'image/png' });
+    res.end(image, 'binary');
+  } catch (error) {
+    console.log(error);
+    res.status(404).send()
+  }
+
 });
 
 app.get('/get-review', async (req, res) => {
-    let rid = req.query.rid;
-    let api_res = await axios.get(`${process.env.API}/review/get-review-by-id?rid=${rid}`)
-    console.log(api_res)
-    res.send(api_res.data)
+  let rid = req.query.rid;
+  let api_res = await axios.get(`https://7cjecbsr4a.us-west-2.awsapprunner.com/review/get-review-by-id?rid=${rid}`)
+  console.log(api_res)
+  res.send(api_res.data)
 })
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+  res.send('Hello World!')
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${port}`)
 })
