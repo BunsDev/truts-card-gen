@@ -94,6 +94,20 @@ app.get(`/review-card`, async function (req, res) {
 
 });
 
+app.get('/gen', async () => {
+  try {
+    let html_gen = generateHtml("testing", "testing");
+    const image = await nodeHtmlToImage({
+      html: html_gen
+    });
+    res.writeHead(200, { 'Content-Type': 'image/png' });
+    res.end(image, 'binary');
+  } catch (error) {
+    console.log(error);
+    res.status(404).send()
+  }
+})
+
 app.get('/get-review', async (req, res) => {
   // let rid = req.query.rid;
   let api_res = await axios.get(`https://7cjecbsr4a.us-west-2.awsapprunner.com/review/get-review-by-id?rid=${rid}`)
