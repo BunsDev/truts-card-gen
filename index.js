@@ -83,7 +83,8 @@ app.get(`/review-card`, async function (req, res) {
     let html_gen = generateHtml(review.dao_name, review_text);
 
     const image = await nodeHtmlToImage({
-      html: html_gen
+      html: html_gen,
+      puppeteerArgs: { headless: true, args: ['--no-sandbox'] }
     });
     res.writeHead(200, { 'Content-Type': 'image/png' });
     res.end(image, 'binary');
@@ -103,7 +104,8 @@ app.get(`/review-card-bin`, async function (req, res) {
     let html_gen = generateHtml(review.dao_name, review_text);
 
     const image = await nodeHtmlToImage({
-      html: html_gen
+      html: html_gen,
+      puppeteerArgs: { headless: true, args: ['--no-sandbox'] }
     });
     res.send({ bin: image });
   } catch (error) {
