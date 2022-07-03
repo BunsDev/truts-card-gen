@@ -5,6 +5,7 @@ const app = express()
 const port = 5500
 const router = express.Router();
 
+
 // additional modules
 const nodeHtmlToImage = require('node-html-to-image');
 const axios = require('axios');
@@ -113,6 +114,32 @@ app.get(`/review-card-bin`, async function (req, res) {
     res.status(404).send()
   }
 
+});
+
+app.get(`/review-snapshot`, async function (req, res) {
+  let rid = req.query.rid;
+  let captureWebsite = await import('capture-website');
+  let captureWebsite_base64 = captureWebsite.default.buffer;
+  if (!rid) {
+    return res.status(404).send();
+  }
+  try {
+    let rid = req.query.rid;
+    let image = await captureWebsite_base64(`https://www.truts.xyz/cardgen/${rid}`, {
+      width: 800,
+      height: 418,
+      launchOptions: {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox'
+        ]
+      }
+    });
+    res.send({ bin: image });
+  } catch (error) {
+    console.log(error);
+    res.status(404).send()
+  }
 });
 
 app.get('/gen', async (req, res) => {
